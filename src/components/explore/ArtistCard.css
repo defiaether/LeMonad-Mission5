@@ -1,14 +1,16 @@
 .artist-card {
-  background: white;
-  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .artist-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--ring);
 }
 
 .artist-card-header {
@@ -24,6 +26,7 @@
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
+  border: 2px solid var(--border);
 }
 
 .artist-image {
@@ -40,7 +43,7 @@
   margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--foreground);
 }
 
 .artist-skills {
@@ -50,16 +53,22 @@
 }
 
 .skill-tag {
-  background: #f5f5f5;
-  color: #666;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
+  border: 1px solid var(--border);
+}
+
+.skill-tag:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .artist-bio {
-  color: #666;
+  color: var(--muted-foreground);
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 1rem 0;
@@ -74,6 +83,8 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
 }
 
 .engagement {
@@ -85,26 +96,34 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #666;
+  color: var(--muted-foreground);
   font-size: 0.9rem;
 }
 
 .likes i, .comments i {
   font-size: 1.1rem;
+  color: var(--primary);
 }
 
 .btn-secondary {
   background: transparent;
-  color: #1a1a1a;
-  border: 1px solid #1a1a1a;
+  color: var(--foreground);
+  border: 1px solid var(--border);
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background: #1a1a1a;
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
 } 

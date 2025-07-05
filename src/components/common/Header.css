@@ -3,9 +3,10 @@
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--card);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   z-index: 1000;
 }
 
@@ -26,14 +27,14 @@
 .logo {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--foreground);
   margin: 0;
   letter-spacing: -0.5px;
 }
 
 .tagline {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--muted-foreground);
   margin-top: 0.2rem;
 }
 
@@ -55,19 +56,20 @@
 
 .nav-link {
   text-decoration: none;
-  color: #666;
+  color: var(--muted-foreground);
   font-weight: 500;
   font-size: 1rem;
   padding: 0.5rem 0;
   transition: color 0.2s ease;
+  border-radius: var(--radius);
 }
 
 .nav-link:hover {
-  color: #1a1a1a;
+  color: var(--foreground);
 }
 
 .nav-link.active {
-  color: #1a1a1a;
+  color: var(--foreground);
 }
 
 .nav-link.active::after {
@@ -77,7 +79,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: #1a1a1a;
+  background: var(--primary);
   border-radius: 2px;
 }
 
@@ -87,21 +89,44 @@
 }
 
 .btn-primary {
-  background: #1a1a1a;
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-  background: #333;
+  background: var(--primary);
+  opacity: 0.9;
   transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-primary:active {
   transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 1rem;
+  }
+  
+  .header-nav {
+    margin: 0 1rem;
+  }
+  
+  .nav-list {
+    gap: 1rem;
+  }
+  
+  .tagline {
+    display: none;
+  }
 } 
