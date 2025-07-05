@@ -1,5 +1,5 @@
 import React from 'react';
-import ArtistCard from '../components/explore/ArtistCard';
+import ArtistCard from '../../components/discover/ArtistCard';
 import './Discover.css';
 
 // Temporary mock data - will be replaced with API calls
