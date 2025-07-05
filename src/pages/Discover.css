@@ -1,4 +1,4 @@
-.explore-page {
+.discover-page {
   padding: 6rem 2rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -136,7 +136,7 @@
 }
 
 @media (max-width: 768px) {
-  .explore-page {
+  .discover-page {
     padding: 5rem 1rem 1rem;
   }
 

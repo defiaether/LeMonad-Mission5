@@ -1,6 +1,6 @@
 import React from 'react';
 import ArtistCard from '../components/explore/ArtistCard';
-import './Explore.css';
+import './Discover.css';
 
 // Temporary mock data - will be replaced with API calls
 const mockArtists = [
@@ -24,9 +24,9 @@ const mockArtists = [
   }
 ];
 
-const Explore: React.FC = () => {
+const Discover: React.FC = () => {
   return (
-    <div className="explore-page">
+    <div className="discover-page">
       <section className="hero-section">
         <h1>Discover Talented Artists</h1>
         <p>Connect with creative minds in the blockchain space</p>
@@ -49,4 +49,4 @@ const Explore: React.FC = () => {
   );
 };
 
-export default Explore; 
+export default Discover; 
