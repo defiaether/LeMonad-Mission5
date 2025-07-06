@@ -45,6 +45,11 @@ h2 {
   transform: scale(1.05);
 }
 
+.profile-image-container:hover .profile-image {
+  transform: none !important;
+  transition: none !important;
+}
+
 .profile-info h1 {
   font-size: 2.5rem;
   color: var(--foreground);
@@ -298,21 +303,76 @@ h2 {
   color: white;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .profile-header {
     flex-direction: column;
-    text-align: center;
+    align-items: flex-start;
+    gap: 1rem;
   }
-
-  .skills {
-    justify-content: center;
+  .profile-image-container {
+    width: 100px;
+    height: 100px;
   }
-
-  .plans-container {
-    grid-template-columns: 1fr;
+  .profile-info h1 {
+    font-size: 1.5rem;
   }
+}
 
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 3.5rem 0.5rem 1rem;
+  }
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+  .profile-image-container {
+    width: 64px;
+    height: 64px;
+  }
+  .profile-info h1 {
+    font-size: 1.1rem;
+  }
   .portfolio-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
   }
+  .plan-card {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+.editable-bounce {
+  box-shadow: 0 0 0 4px #4fd1c5, 0 4px 24px 0 #4fd1c588;
+  animation: bounce-shadow 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+@keyframes bounce-shadow {
+  0% { box-shadow: 0 0 0 0 #4fd1c5, 0 0 0 0 #4fd1c588; }
+  60% { box-shadow: 0 0 0 8px #4fd1c5, 0 8px 32px 0 #4fd1c588; }
+  100% { box-shadow: 0 0 0 4px #4fd1c5, 0 4px 24px 0 #4fd1c588; }
+}
+
+.profile-edit-input {
+  border: 2px solid #4fd1c5;
+  border-radius: 8px;
+  background: #23232b;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 1.1em;
+  outline: none;
+  margin-bottom: 8px;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+
+.profile-edit-input:focus {
+  border-color: #38b2ac;
+  box-shadow: 0 0 0 2px #38b2ac44;
+}
+
+.profile-message-fade {
+  opacity: 0;
+  transition: opacity 1s;
 } 

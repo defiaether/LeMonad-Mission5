@@ -1,15 +1,6 @@
 import React, { useState, useRef } from 'react';
 import './CreatePost.css';
-
-interface Post {
-  artistName: string;
-  artistAvatar: string;
-  title: string;
-  description: string;
-  image: string;
-  imageFormat: '4:3' | '16:9' | '1:1' | 'custom';
-  createdAt: Date;
-}
+import { Post } from '../../App';
 
 interface CreatePostProps {
   onCreatePost: (post: Omit<Post, 'id' | 'likes' | 'comments' | 'isLiked'>) => void;
@@ -19,8 +10,7 @@ interface CreatePostProps {
 const CreatePost: React.FC<CreatePostProps> = ({ onCreatePost, formRef }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState<string>('');
-  const [imageFormat, setImageFormat] = useState<'4:3' | '16:9' | '1:1' | 'custom'>('16:9');
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,25 +19,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreatePost, formRef }) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const aspectRatio = img.width / img.height;
-          let format: '4:3' | '16:9' | '1:1' | 'custom';
-          
-          if (Math.abs(aspectRatio - 4/3) < 0.1) {
-            format = '4:3';
-          } else if (Math.abs(aspectRatio - 16/9) < 0.1) {
-            format = '16:9';
-          } else if (Math.abs(aspectRatio - 1) < 0.1) {
-            format = '1:1';
-          } else {
-            format = 'custom';
-          }
-          
-          setImageFormat(format);
-          setImage(e.target?.result as string);
-        };
-        img.src = e.target?.result as string;
+        setImageUrl(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -55,7 +27,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreatePost, formRef }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !description.trim() || !image) {
+    if (!title.trim() || !description.trim() || !imageUrl) {
       return;
     }
 
@@ -64,12 +36,13 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreatePost, formRef }) => {
     // Simulate API call
     setTimeout(() => {
       const newPost: Omit<Post, 'id' | 'likes' | 'comments' | 'isLiked'> = {
-        artistName: 'Current User',
-        artistAvatar: '/mock/artist1.jpg',
         title: title.trim(),
         description: description.trim(),
-        image,
-        imageFormat,
+        imageUrl,
+        author: {
+          name: 'Current User',
+          avatar: '/mock/artist1.jpg'
+        },
         createdAt: new Date()
       };
 
@@ -78,8 +51,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreatePost, formRef }) => {
       // Reset form
       setTitle('');
       setDescription('');
-      setImage('');
-      setImageFormat('16:9');
+      setImageUrl('');
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -88,8 +60,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreatePost, formRef }) => {
   };
 
   const removeImage = () => {
-    setImage('');
-    setImageFormat('16:9');
+    setImageUrl('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -128,9 +99,9 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreatePost, formRef }) => {
         <div className="form-group">
           <label htmlFor="image">Image</label>
           <div className="image-upload-area compact-uploader">
-            {image ? (
+            {imageUrl ? (
               <div className="image-preview">
-                <img src={image} alt="Preview" />
+                <img src={imageUrl} alt="Preview" />
                 <button type="button" onClick={removeImage} className="remove-image-cross" title="Remove image">&times;</button>
               </div>
             ) : (

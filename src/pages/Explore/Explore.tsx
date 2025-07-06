@@ -3,6 +3,7 @@ import './Explore.css';
 import PostCard from '../../components/explore/PostCard';
 import Header from '../../components/common/Header';
 import { Post } from '../../App';
+import Aurora from '../../components/common/Aurora';
 
 interface ExploreProps {
   posts: Post[];
@@ -43,45 +44,35 @@ const Explore: React.FC<ExploreProps> = ({ posts, setPosts }) => {
   };
 
   return (
-    <div className="explore-page">
-      <div className="explore-container">
-        <Header />
-        <div className="explore-header">
-          <h1>Explore</h1>
-          <p>Discover amazing artwork from talented artists</p>
-        </div>
-        <div className="explore-content">
-          <div className="feed-section">
-            <div className="posts-feed">
-              {posts.map(post => (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  onLike={handleLike}
-                  onComment={handleComment}
-                />
-              ))}
+    <div style={{ position: 'relative', minHeight: '100vh', width: '100%' }}>
+      <Aurora
+        colorStops={["#200052", "#836EF9", "#200052"]}
+        blend={0.5}
+        amplitude={1.0}
+        speed={0.5}
+      />
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <div className="explore-page">
+          <div className="explore-container">
+            <div className="explore-header">
+              <h1>Explore</h1>
             </div>
-          </div>
-          <div className="sidebar">
-            <div className="trending-section">
-              <h3>Trending Artists</h3>
-              <div className="trending-artists">
-                <div className="trending-artist">
-                  <img src="/mock/artist1.jpg" alt="Artist" />
-                  <div>
-                    <h4>Sarah Chen</h4>
-                    <p>Digital Artist</p>
-                  </div>
-                </div>
-                <div className="trending-artist">
-                  <img src="/mock/artist2.jpg" alt="Artist" />
-                  <div>
-                    <h4>Marcus Rodriguez</h4>
-                    <p>Photographer</p>
-                  </div>
+            <div className="explore-content">
+              <div className="feed-section">
+                <div className="posts-feed">
+                  {posts.map((post, idx) => (
+                    <React.Fragment key={post.id}>
+                      <PostCard
+                        post={post}
+                        onLike={handleLike}
+                        onComment={handleComment}
+                      />
+                      {idx < posts.length - 1 && <hr className="post-divider" />}
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
+
             </div>
           </div>
         </div>

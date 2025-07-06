@@ -1,0 +1,35 @@
+.soon-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(2px);
+  width: 100vw;
+  height: 100vh;
+}
+
+.soon-modal-glass {
+  min-width: 320px;
+  min-height: 180px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 32px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.soon-modal-text {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 16px #836EF9, 0 1px 2px #200052;
+  letter-spacing: 2px;
+  text-align: center;
+} 

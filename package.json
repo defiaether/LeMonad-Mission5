@@ -6,6 +6,9 @@
     "@types/node": "^16.18.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "ethers": "^6.15.0",
+    "node-fetch": "^3.3.2",
+    "ogl": "^1.0.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
@@ -25,6 +28,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "http://localhost:4000",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -37,4 +41,4 @@
       "last 1 safari version"
     ]
   }
-} 
+}

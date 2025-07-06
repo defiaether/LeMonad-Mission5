@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import './Profile.css';
+import { useAuth } from '../../components/common/AuthContext';
 
 // Mock data - will be replaced with API calls
 const mockProfile = {
@@ -74,25 +75,150 @@ const mockProfile = {
 };
 
 const Profile: React.FC = () => {
+  const { user, updateProfile, loading } = useAuth();
+  const [editing, setEditing] = useState(false);
+  const [username, setUsername] = useState('');
+  const [bio, setBio] = useState('');
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState('/images/default_profile_picture.png');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [message, setMessage] = useState('');
+  const [fadeMessage, setFadeMessage] = useState(false);
+
+  React.useEffect(() => {
+    if (user) {
+      setUsername(user.username || '');
+      setBio(user.bio || '');
+      setProfileImage(user.profile_picture_url || '/images/default_profile_picture.png');
+    }
+  }, [user]);
+
+  React.useEffect(() => {
+    if (message) {
+      setFadeMessage(false);
+      const fadeTimeout = setTimeout(() => setFadeMessage(true), 4000);
+      const clearTimeoutId = setTimeout(() => setMessage(''), 5000);
+      return () => {
+        clearTimeout(fadeTimeout);
+        clearTimeout(clearTimeoutId);
+      };
+    }
+  }, [message]);
+
+  if (!user) {
+    return (
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', fontSize: '2rem', fontWeight: 'bold', color: '#ff3b3b'}}>
+        login first!
+      </div>
+    );
+  }
+
+  const handleEdit = () => {
+    setEditing(true);
+  };
+
+  const handleCancel = () => {
+    setEditing(false);
+    setUsername(user.username || '');
+    setBio(user.bio || '');
+    setProfilePicture(null);
+    setProfileImage(user.profile_picture_url || '/images/default_profile_picture.png');
+    setMessage('');
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfilePicture(e.target.files[0]);
+      setProfileImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const handleSave = async () => {
+    setMessage('');
+    try {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('bio', bio);
+      if (profilePicture) formData.append('profile_picture', profilePicture);
+      await updateProfile(formData);
+      setMessage('Profile updated!');
+      setEditing(false);
+    } catch (err: any) {
+      setMessage(err.message || 'Failed to update profile.');
+    }
+  };
+
   return (
     <div className="profile-page">
       <section className="profile-header">
-        <div className="profile-image-container">
-          <img src={mockProfile.profileImage} alt={mockProfile.name} className="profile-image" />
+        <div className={`profile-image-container${editing ? ' editable-bounce' : ''}`}> 
+          <img src={profileImage} alt={username} className="profile-image" />
+          {editing && (
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ marginTop: 8 }}
+            />
+          )}
         </div>
-        <div className="profile-info">
-          <h1>{mockProfile.name}</h1>
-          <div className="skills">
-            {mockProfile.skills.map((skill, index) => (
-              <span key={index} className="skill-tag">{skill}</span>
-            ))}
+        <div className="profile-info" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          {editing ? (
+            <input
+              type="text"
+              value={username}
+              maxLength={10}
+              onChange={e => setUsername(e.target.value)}
+              className="profile-edit-input editable-bounce"
+              style={{ fontSize: '2em', fontWeight: 'bold', marginBottom: 8, width: 180 }}
+            />
+          ) : (
+            <h1 style={{ fontSize: '2em', fontWeight: 'bold', marginBottom: 8, width: 180 }}>{username}</h1>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 140 }}>
+            {editing ? (
+              <>
+                <button
+                  className="btn-primary"
+                  style={{ minWidth: 140, fontWeight: 'bold', marginBottom: 4 }}
+                  onClick={handleSave}
+                  disabled={loading}
+                >
+                  {loading ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button className="btn-secondary" style={{ minWidth: 100 }} onClick={handleCancel}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button className="btn-primary" style={{ minWidth: 140, fontWeight: 'bold', marginBottom: 4 }} onClick={handleEdit}>
+                Edit Profile
+              </button>
+            )}
+            {message && (
+              <div style={{ width: 140, textAlign: 'center', color: '#4fd1c5', fontWeight: 'bold', marginTop: 4, fontSize: '1em', alignSelf: 'center' }}>
+                {message}
+              </div>
+            )}
           </div>
         </div>
+        <div className="profile-email" style={{ fontWeight: 'bold', marginTop: 8 }}>{user.email}</div>
       </section>
 
       <section className="bio-section">
         <h2>About Me</h2>
-        <p>{mockProfile.bio}</p>
+        {editing ? (
+          <textarea
+            value={bio}
+            onChange={e => setBio(e.target.value)}
+            className="profile-edit-input editable-bounce"
+            style={{ width: '100%', minHeight: 60, fontSize: '1.1em', marginBottom: 8 }}
+          />
+        ) : (
+          <p>{bio || 'tell about yourself...'}</p>
+        )}
       </section>
 
       <section className="portfolio-section">
